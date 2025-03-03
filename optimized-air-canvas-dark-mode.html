@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Air Canvas</title>
+  <style>
+    :root {
+      --bg-color: #f0f2f5;
+      --text-color: #333;
+      --box-bg: white;
+      --box-shadow: rgba(0,0,0,0.1);
+      --hint-color: #666;
+      --btn-text: white;
+      --video-bg: #000;
+      --canvas-bg: white;
+      --border-color: #ccc;
+      --green-btn: #4CAF50;
+      --green-btn-hover: #45a049;
+      --red-btn: #f44336;
+      --red-btn-hover: #d32f2f;
+      --blue-btn: #2196F3;
+      --blue-btn-hover: #0b7dda;
+      --gray-btn: #757575;
+      --gray-btn-hover: #616161;
+      --purple-btn: #9C27B0;
+      --purple-btn-hover: #7B1FA2;
+    }
+
+    .dark-mode {
+      --bg-color: #121212;
+      --text-color: #f0f0f0;
+      --box-bg: #1e1e1e;
+      --box-shadow: rgba(0,0,0,0.3);
+      --hint-color: #aaa;
+      --btn-text: #f0f0f0;
+      --video-bg: #1e1e1e;
+      --canvas-bg: #2d2d2d;
+      --border-color: #444;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: background-color 0.3s ease;
+    }
+
+    h1 {
+      color: var(--text-color);
+      margin-bottom: 10px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 1300px;
+      margin-bottom: 20px;
+    }
+
+    .theme-switch-wrapper {
+      display: flex;
+      align-items: center;
+    }
+    
+    .theme-switch {
+      display: inline-block;
+      height: 26px;
+      position: relative;
+      width: 50px;
+    }
+
+    .theme-switch input {
+      display: none;
+    }
+
+    .slider {
+      background-color: #ccc;
+      bottom: 0;
+      cursor: pointer;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      background-color: white;
+      bottom: 4px;
+      content: "";
+      height: 18px;
+      left: 4px;
+      position: absolute;
+      transition: .4s;
+      width: 18px;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+
+    .theme-icon {
+      margin-left: 10px;
+      font-size: 18px;
+    }
+
+    .msg-box {
+      background-color: var(--box-bg);
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px var(--box-shadow);
+      margin-bottom: 20px;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .status-msg {
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .hint-msg {
+      font-size: 14px;
+      color: var(--hint-color);
+    }
+
+    .canvas-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 20px;
+      max-width: 1300px;
+    }
+
+    .video-box, .draw-box {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px var(--box-shadow);
+      background-color: var(--video-bg);
+      width: 640px;
+      height: 480px;
+    }
+
+    video, canvas {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    #vidCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    #drawCanvas {
+      background-color: var(--canvas-bg);
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      color: var(--btn-text);
+    }
+
+    button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .start-btn {
+      background-color: var(--green-btn);
+    }
+
+    .start-btn:hover {
+      background-color: var(--green-btn-hover);
+    }
+
+    .stop-btn {
+      background-color: var(--red-btn);
+    }
+
+    .stop-btn:hover {
+      background-color: var(--red-btn-hover);
+    }
+
+    .draw-btn {
+      background-color: var(--blue-btn);
+    }
+
+    .draw-btn:hover {
+      background-color: var(--blue-btn-hover);
+    }
+
+    .clear-btn {
+      background-color: var(--gray-btn);
+    }
+
+    .clear-btn:hover {
+      background-color: var(--gray-btn-hover);
+    }
+
+    .save-btn {
+      background-color: var(--purple-btn);
+    }
+
+    .save-btn:hover {
+      background-color: var(--purple-btn-hover);
+    }
+
+    .settings {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+      background-color: var(--box-bg);
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px var(--box-shadow);
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .setting-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+
+    input[type="color"] {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    input[type="range"] {
+      width: 120px;
+    }
+
+    .val-display {
+      font-size: 14px;
+      min-width: 30px;
+      text-align: center;
+      color: var(--text-color);
+    }
+
+    .finger-select {
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+      background-color: var(--box-bg);
+      color: var(--text-color);
+    }
+
+    .loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      flex-direction: column;
+    }
+
+    .loading-text {
+      color: white;
+      font-size: 24px;
+      margin-top: 20px;
+    }
+
+    .spinner {
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #3498db;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 1300px) {
+      .canvas-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .video-box, .draw-box {
+        width: 100%;
+        max-width: 640px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loadingEl" class="loading">
+    <div class="spinner"></div>
+    <p class="loading-text">Loading hand tracking model...</p>
+  </div>
+
+  <div class="header">
+    <h1>Air Canvas - Draw with Hand Tracking</h1>
+    <div class="theme-switch-wrapper">
+      <label class="theme-switch" for="checkbox">
+        <input type="checkbox" id="checkbox" />
+        <div class="slider"></div>
+      </label>
+      <span class="theme-icon">🌓</span>
+    </div>
+  </div>
+  
+  <div class="msg-box">
+    <p class="status-msg" id="statusMsg">Welcome to Air Canvas! Grant camera access to begin.</p>
+    <p class="hint-msg">Point your index finger to draw in the air. Make a fist to stop drawing temporarily.</p>
+  </div>
+  
+  <div class="canvas-container">
+    <div class="video-box">
+      <video id="vid" autoplay playsinline muted></video>
+      <canvas id="vidCanvas"></canvas>
+    </div>
+    
+    <div class="draw-box">
+      <canvas id="drawCanvas"></canvas>
+    </div>
+  </div>
+  
+  <div class="controls">
+    <button id="startBtn" class="start-btn" disabled>Start Tracking</button>
+    <button id="drawBtn" class="draw-btn" disabled>Start Drawing</button>
+    <button id="clearBtn" class="clear-btn">Clear Canvas</button>
+    <button id="saveBtn" class="save-btn">Save Drawing</button>
+  </div>
+  
+  <div class="settings">
+    <div class="setting-group">
+      <label for="colorPick">Color:</label>
+      <input type="color" id="colorPick" value="#ff0000">
+    </div>
+    
+    <div class="setting-group">
+      <label for="brushSize">Brush Size:</label>
+      <input type="range" id="brushSize" min="1" max="20" value="5">
+      <span class="val-display" id="sizeDisplay">5px</span>
+    </div>
+    
+    <div class="setting-group">
+      <label for="fingerSel">Drawing Finger:</label>
+      <select id="fingerSel" class="finger-select">
+        <option value="8">Index Finger</option>
+        <option value="12">Middle Finger</option>
+        <option value="16">Ring Finger</option>
+        <option value="20">Pinky Finger</option>
+      </select>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+  
+  <script>
+    const loadingEl = document.getElementById('loadingEl');
+    const vid = document.getElementById('vid');
+    const vidCanvas = document.getElementById('vidCanvas');
+    const drawCanvas = document.getElementById('drawCanvas');
+    const startBtn = document.getElementById('startBtn');
+    const drawBtn = document.getElementById('drawBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const colorPick = document.getElementById('colorPick');
+    const brushSize = document.getElementById('brushSize');
+    const sizeDisplay = document.getElementById('sizeDisplay');
+    const fingerSel = document.getElementById('fingerSel');
+    const statusMsg = document.getElementById('statusMsg');
+    const checkbox = document.getElementById('checkbox');
+    
+    const vidCtx = vidCanvas.getContext('2d');
+    const drawCtx = drawCanvas.getContext('2d');
+    
+    let isTracking = false;
+    let isDrawing = false;
+    let shouldDraw = false;
+    let animId = null;
+    let prevPoint = null;
+    let landmarks = null;
+    let hands = null;
+    let isDarkMode = false;
+    
+    checkbox.addEventListener('change', () => {
+      document.body.classList.toggle('dark-mode');
+      isDarkMode = document.body.classList.contains('dark-mode');
+      localStorage.setItem('darkMode', isDarkMode);
+      updateCanvasBg();
+    });
+    
+    function loadTheme() {
+      const savedDarkMode = localStorage.getItem('darkMode');
+      if (savedDarkMode === 'true') {
+        document.body.classList.add('dark-mode');
+        checkbox.checked = true;
+        isDarkMode = true;
+      }
+    }
+    
+    function updateCanvasBg() {
+      const bgColor = isDarkMode ? '#2d2d2d' : 'white';
+      drawCtx.fillStyle = bgColor;
+      drawCtx.fillRect(0, 0, drawCanvas.width, drawCanvas.height);
+    }
+    
+    function initCanvas() {
+      vidCanvas.width = 640;
+      vidCanvas.height = 480;
+      drawCanvas.width = 640;
+      drawCanvas.height = 480;
+      
+      updateCanvasBg();
+      
+      vidCtx.translate(vidCanvas.width, 0);
+      vidCtx.scale(-1, 1);
+    }
+    
+    async function setupHands() {
+      try {
+        hands = new window.Hands({
+          locateFile: (file) => {
+            return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+          }
+        });
+        
+        hands.setOptions({
+          maxNumHands: 1,
+          modelComplexity: 1,
+          minDetectionConfidence: 0.7,
+          minTrackingConfidence: 0.7
+        });
+        
+        hands.onResults(onResults);
+        
+        loadingEl.style.display = 'none';
+        
+        await setupCam();
+        
+      } catch (err) {
+        console.error('MediaPipe setup error:', err);
+        updateMsg('Error setting up hand tracking. Please reload the page.');
+        loadingEl.style.display = 'none';
+      }
+    }
+    
+    async function setupCam() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { width: 640, height: 480 }
+        });
+        
+        vid.srcObject = stream;
+        
+        await new Promise((resolve) => {
+          vid.onloadedmetadata = () => {
+            resolve();
+          };
+        });
+        
+        initCanvas();
+        updateMsg('Camera access granted. Click "Start Tracking" to begin.');
+        startBtn.disabled = false;
+        
+        vid.play();
+        detectHands();
+        
+      } catch (err) {
+        updateMsg('Error accessing camera: ' + err.message);
+        console.error('Camera error:', err);
+      }
+    }
+    
+    async function detectHands() {
+      if (vid.paused || vid.ended || !hands) return;
+      
+      await hands.send({ image: vid });
+      setTimeout(detectHands, 10);
+    }
+    
+    function onResults(results) {
+      landmarks = results.multiHandLandmarks?.[0] || null;
+      
+      if (isTracking) {
+        drawVideo();
+      }
+    }
+    
+    function drawVideo() {
+      if (!isTracking) return;
+      
+      vidCtx.clearRect(0, 0, vidCanvas.width, vidCanvas.height);
+      
+      vidCtx.save();
+      vidCtx.drawImage(vid, 0, 0, vidCanvas.width, vidCanvas.height);
+      vidCtx.restore();
+      
+      if (landmarks) {
+        drawHand();
+        processDraw();
+      }
+      
+      animId = requestAnimationFrame(drawVideo);
+    }
+    
+    function drawHand() {
+      vidCtx.save();
+      vidCtx.fillStyle = '#00FF00';
+      
+      for (let i = 0; i < landmarks.length; i++) {
+        const lm = landmarks[i];
+        const x = lm.x * vidCanvas.width;
+        const y = lm.y * vidCanvas.height;
+        
+        vidCtx.beginPath();
+        vidCtx.arc(x, y, 5, 0, 2 * Math.PI);
+        vidCtx.fill();
+      }
+      
+      const fidx = parseInt(fingerSel.value);
+      const ftip = landmarks[fidx];
+      if (ftip) {
+        const x = ftip.x * vidCanvas.width;
+        const y = ftip.y * vidCanvas.height;
+        
+        vidCtx.fillStyle = colorPick.value;
+        vidCtx.beginPath();
+        vidCtx.arc(x, y, 8, 0, 2 * Math.PI);
+        vidCtx.fill();
+      }
+      
+      vidCtx.restore();
+    }
+    
+    function processDraw() {
+      if (!isDrawing) return;
+      
+      const fidx = parseInt(fingerSel.value);
+      const ftip = landmarks[fidx];
+      
+      if (!ftip) return;
+      
+      shouldDraw = checkGesture();
+      
+      if (shouldDraw) {
+        const x = (1 - ftip.x) * drawCanvas.width;
+        const y = ftip.y * drawCanvas.height;
+        
+        if (prevPoint) {
+          drawCtx.beginPath();
+          drawCtx.moveTo(prevPoint.x, prevPoint.y);
+          drawCtx.lineTo(x, y);
+          drawCtx.strokeStyle = colorPick.value;
+          drawCtx.lineWidth = parseInt(brushSize.value);
+          drawCtx.lineCap = 'round';
+          drawCtx.lineJoin = 'round';
+          drawCtx.stroke();
+        }
+        
+        prevPoint = { x, y };
+      } else {
+        prevPoint = null;
+      }
+    }
+    
+    function checkGesture() {
+      const idxTip = landmarks[8];
+      const midTip = landmarks[12];
+      
+      return idxTip.y < midTip.y;
+    }
+    
+    function updateMsg(message) {
+      statusMsg.textContent = message;
+    }
+    
+    function startTrack() {
+      if (isTracking) return;
+      
+      isTracking = true;
+      startBtn.textContent = 'Stop Tracking';
+      startBtn.className = 'stop-btn';
+      drawBtn.disabled = false;
+      updateMsg('Tracking started. Point your index finger to draw.');
+      
+      animId = requestAnimationFrame(drawVideo);
+    }
+    
+    function stopTrack() {
+      if (!isTracking) return;
+      
+      isTracking = false;
+      isDrawing = false;
+      startBtn.textContent = 'Start Tracking';
+      startBtn.className = 'start-btn';
+      drawBtn.textContent = 'Start Drawing';
+      drawBtn.className = 'draw-btn';
+      drawBtn.disabled = true;
+      updateMsg('Tracking stopped.');
+      
+      if (animId) {
+        cancelAnimationFrame(animId);
+        animId = null;
+      }
+    }
+    
+    function toggleDraw() {
+      isDrawing = !isDrawing;
+      prevPoint = null;
+      
+      if (isDrawing) {
+        drawBtn.textContent = 'Pause Drawing';
+        updateMsg('Drawing active! Point your index finger to draw.');
+      } else {
+        drawBtn.textContent = 'Start Drawing';
+        updateMsg('Drawing paused. Position your hand before resuming.');
+      }
+    }
+    
+    function clearDraw() {
+      updateCanvasBg();
+      updateMsg('Canvas cleared.');
+    }
+    
+    function saveDraw() {
+      const link = document.createElement('a');
+      link.download = 'air-canvas.png';
+      link.href = drawCanvas.toDataURL('image/png');
+      link.click();
+      updateMsg('Drawing saved!');
+    }
+    
+    function updateSize() {
+      sizeDisplay.textContent = brushSize.value + 'px';
+    }
+    
+    startBtn.addEventListener('click', () => isTracking ? stopTrack() : startTrack());
+    drawBtn.addEventListener('click', toggleDraw);
+    clearBtn.addEventListener('click', clearDraw);
+    saveBtn.addEventListener('click', saveDraw);
+    brushSize.addEventListener('input', updateSize);
+    
+    updateSize();
+    loadTheme();
+    
+    window.onload = function() {
+      setupHands();
+    };
+  </script>
+</body>
+</html>
