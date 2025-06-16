@@ -158,13 +158,38 @@
         }
 
         @media (max-width: 1024px) {
-            .side-widget { display: none; }
-            .main-content { padding-right: 0; }
+            .side-widget {
+                position: relative;
+                top: auto;
+                right: auto;
+                width: 100%;
+                margin-top: 4rem;
+                flex-direction: row;
+                justify-content: center;
+            }
+            .side-widget .tenor-gif-embed {
+                max-width: 45%;
+            }
+            .main-content {
+                padding-right: 0;
+            }
         }
+
         @media (max-width: 768px) {
-            body { flex-direction: column; padding: 1.5rem; }
-            .sidebar { width: 100%; display: flex; flex-wrap: wrap; margin-bottom: 2rem; }
-            .sidebar-nav a { margin-right: 1.5rem; margin-bottom: 0.5rem; }
+            body {
+                flex-direction: column;
+                padding: 1.5rem;
+            }
+            .sidebar {
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                margin-bottom: 2rem;
+            }
+            .sidebar-nav a {
+                margin-right: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -187,7 +212,6 @@
         <section class="intro">
             <p>loves working on <span class="highlight">flutter</span>, <span class="highlight">python</span>, <span class="highlight">linux</span>, and <span class="highlight">rust</span>.</p>
             <p>building BLACK and working on AI and ML <span class="highlight">as of 2025</span>.</p>
-            
         </section>
         
         <section class="quick-links">
@@ -200,8 +224,8 @@
         <section id="environment" class="content-section">
             <h2>my environment &rarr;</h2>
             <div class="image-gallery">
-                <img src="https://github.com/loveucifer/air-canvas-2/blob/main/codeeditor.png?raw=true" alt="Code editor screenshot">
-                <img src="https://github.com/loveucifer/air-canvas-2/blob/main/desktop.png?raw=true" alt="Desktop screenshot">
+                <img src="https://github.com/loveucifer/dev/blob/main/codeeditor.png?raw=true" alt="Code editor screenshot">
+                <img src="https://github.com/loveucifer/dev/blob/main/desktop.png?raw=true" alt="Desktop screenshot">
             </div>
         </section>
 
@@ -238,7 +262,6 @@
                 </div>
             </div>
         </section>
-
     </main>
     
     <aside class="side-widget">
@@ -249,3 +272,4 @@
     <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
 </body>
 </html>
+
