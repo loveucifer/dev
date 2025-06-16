@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>loveucifer | Philosophy</title>
+    <style>
+        :root {
+            --bg: #000000;
+            --text: #ccc;
+            --text-main: #e0e0e0;
+            --text-light: #888;
+            --highlight-bg: #2a2a2a;
+            --highlight-border: #3a3a3a;
+        }
+
+        @font-face {
+            font-family: 'custom_mono';
+            src: url('https://fonts.gstatic.com/s/robotomono/v22/L0x5DF4xlVMF-BfR8bXMIjhGq3-cXbKDO1w.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'custom_mono', 'SF Mono', 'Consolas', 'Menlo', monospace;
+            font-size: 16px;
+            line-height: 1.7;
+            margin: 0;
+            display: flex;
+            padding: 3rem;
+        }
+
+        a {
+            color: var(--text);
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: var(--text-main);
+        }
+        
+        .sidebar {
+            width: 150px;
+            flex-shrink: 0;
+            padding-right: 2rem;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-nav a:before {
+            content: '>';
+            margin-right: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .main-content {
+            width: 100%;
+            padding-right: 260px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4rem;
+        }
+
+        header .logo {
+            font-weight: bold;
+        }
+        
+        .content-section {
+            margin-top: 4rem;
+        }
+
+        .content-section h2 {
+            font-weight: normal;
+            font-size: 1em;
+            margin-bottom: 2rem;
+        }
+        
+        .item-list {
+            max-width: 750px;
+        }
+
+        .list-item {
+            display: flex;
+            margin-bottom: 1.5rem;
+            align-items: flex-start;
+        }
+        
+        .list-item .name {
+            width: 150px;
+            flex-shrink: 0;
+            color: var(--text-main);
+        }
+        
+        .list-item .desc {
+            color: var(--text-light);
+        }
+        
+        .side-widget {
+            position: fixed;
+            top: 3rem;
+            right: 3rem;
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .side-widget .tenor-gif-embed {
+            border: 1px solid var(--highlight-border);
+        }
+
+        /* Classes for styling quotes and books */
+        .quote {
+            display: block;
+            font-style: italic;
+            margin-bottom: 0.75rem;
+        }
+
+        .key-work {
+            font-style: normal;
+            color: var(--text-main);
+            font-weight: bold;
+        }
+
+        @media (max-width: 1024px) {
+            .side-widget { display: none; }
+            .main-content { padding-right: 0; }
+        }
+        @media (max-width: 768px) {
+            body { flex-direction: column; padding: 1.5rem; }
+            .sidebar { width: 100%; display: flex; flex-wrap: wrap; margin-bottom: 2rem; }
+            .sidebar-nav a { margin-right: 1.5rem; margin-bottom: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <nav class="sidebar-nav">
+            <a href="philosophy.html">philosophy</a>
+            <a href="books.html">books</a>
+            <a href="projects.html">projects</a>
+            <a href="YOUR_RESUME_LINK.pdf" target="_blank">resume</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header>
+            <a href="/" class="logo" style="text-decoration: none;">loveucifer</a>
+        </header>
+
+        <section id="philosophy" class="content-section">
+            <h2>influences &rarr;</h2>
+            <div class="item-list">
+
+                <div class="list-item">
+                    <div class="name">René Descartes</div>
+                    <div class="desc">
+                        <span class="quote">"Cogito, ergo sum." (I think, therefore I am.)</span>
+                        <span class="key-work">Key Work:</span> Meditations on First Philosophy
+                    </div>
+                </div>
+
+                <div class="list-item">
+                    <div class="name">Aleister Crowley</div>
+                    <div class="desc">
+                        <span class="quote">"Do what thou wilt shall be the whole of the Law."</span>
+                        <span class="key-work">Key Work:</span> The Book of the Law
+                    </div>
+                </div>
+
+                <div class="list-item">
+                    <div class="name">Fyodor Dostoevsky</div>
+                    <div class="desc">
+                        <span class="quote">"To go wrong in one's own way is better than to go right in someone else's."</span>
+                        <span class="key-work">Key Work:</span> Notes from Underground
+                    </div>
+                </div>
+                
+                <div class="list-item">
+                    <div class="name">J. Krishnamurti</div>
+                    <div class="desc">
+                        <span class="quote">"Truth is a pathless land."</span>
+                        <span class="key-work">Key Work:</span> Freedom from the Known
+                    </div>
+                </div>
+
+                <div class="list-item">
+                    <div class="name">Helena Blavatsky</div>
+                    <div class="desc">
+                        <span class="quote">"There is no religion higher than truth."</span>
+                        <span class="key-work">Key Work:</span> The Secret Doctrine
+                    </div>
+                </div>
+
+                <div class="list-item">
+                    <div class="name">Dion Fortune</div>
+                    <div class="desc">
+                        <span class="quote">"Magic is the art of changing consciousness at will."</span>
+                        <span class="key-work">Key Work:</span> The Mystical Qabalah
+                    </div>
+                </div>
+
+                <div class="list-item">
+                    <div class="name">Alan Moore</div>
+                    <div class="desc">
+                        <span class="quote">"Ideas are bulletproof."</span>
+                        <span class="key-work">Notable Works:</span> Watchmen, V for Vendetta
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        
+    </main>
+    
+    <aside class="side-widget">
+        <div class="tenor-gif-embed" data-postid="7476516897214488946" data-share-method="host" data-aspect-ratio="1.77857" data-width="100%"><a href="https://tenor.com/view/pinkupinemame-kakegurui-anime-gif-7476516897214488946">Pinkupinemame Kakegurui GIF</a>from <a href="https://tenor.com/search/pinkupinemame-gifs">Pinkupinemame GIFs</a></div>
+        <div class="tenor-gif-embed" data-postid="5850692150497406639" data-share-method="host" data-aspect-ratio="1.76596" data-width="100%"><a href="https://tenor.com/view/cyberpunk-2077-2077brizzard-br-b-gif-5850692150497406639">Cyberpunk 2077 GIF</a>from <a href="https://tenor.com/search/cyberpunk-gifs">Cyberpunk GIFs</a></div>
+    </aside>
+
+    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+</body>
+</html>
