@@ -111,6 +111,13 @@
             color: var(--text-light);
         }
         
+        .project-link {
+            display: inline-block;
+            margin-top: 8px;
+            color: var(--text-main);
+            font-weight: bold;
+        }
+
         .side-widget {
             position: fixed;
             top: 3rem;
@@ -124,22 +131,40 @@
         .side-widget .tenor-gif-embed {
             border: 1px solid var(--highlight-border);
         }
-        
-        .project-link {
-            display: inline-block;
-            margin-top: 8px;
-            color: var(--text-main);
-            font-weight: bold;
-        }
 
         @media (max-width: 1024px) {
-            .side-widget { display: none; }
-            .main-content { padding-right: 0; }
+            .side-widget {
+                position: relative;
+                top: auto;
+                right: auto;
+                width: 100%;
+                margin-top: 4rem;
+                flex-direction: row;
+                justify-content: center;
+            }
+            .side-widget .tenor-gif-embed {
+                max-width: 45%;
+            }
+            .main-content {
+                padding-right: 0;
+            }
         }
+
         @media (max-width: 768px) {
-            body { flex-direction: column; padding: 1.5rem; }
-            .sidebar { width: 100%; display: flex; flex-wrap: wrap; margin-bottom: 2rem; }
-            .sidebar-nav a { margin-right: 1.5rem; margin-bottom: 0.5rem; }
+            body {
+                flex-direction: column;
+                padding: 1.5rem;
+            }
+            .sidebar {
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                margin-bottom: 2rem;
+            }
+            .sidebar-nav a {
+                margin-right: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -162,18 +187,14 @@
         <section id="projects" class="content-section">
             <h2>my projects &rarr;</h2>
             <div class="item-list">
-
                 <div class="list-item">
                     <div class="name">AI Presentation Maker</div>
                     <div class="desc">
                          This project is a web-based application built with Streamlit that uses Sarvam AI's language models to automatically generate complete, multilingual PowerPoint presentations from a single topic.
-
-Users can input a topic, choose a target language from a list of supported Indian languages, and receive a downloadable .pptx file containing generated slides in regional languages
                         <br>
                         <a href="https://github.com/loveucifer/sarvam-ai-cookbook/tree/main/examples/AI_Presentation_Architect" target="_blank" class="project-link">View on GitHub &rarr;</a>
                     </div>
                 </div>
-
                 <div class="list-item">
                     <div class="name">Quick Start Chatbot</div>
                     <div class="desc">
@@ -182,7 +203,6 @@ Users can input a topic, choose a target language from a list of supported India
                         <a href="https://github.com/loveucifer/sarvam-ai-cookbook/tree/main/examples/QuickStart_Chatbot" target="_blank" class="project-link">View on GitHub &rarr;</a>
                     </div>
                 </div>
-                
                 <div class="list-item">
                     <div class="name">Calorie Master</div>
                     <div class="desc">
