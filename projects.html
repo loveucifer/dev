@@ -1,249 +1,341 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>loveucifer | Projects</title>
-    <style>
-        :root {
-            --bg: #000000;
-            --text: #ccc;
-            --text-main: #e0e0e0;
-            --text-light: #888;
-            --highlight-bg: #2a2a2a;
-            --highlight-border: #3a3a3a;
-        }
-
-        @font-face {
-            font-family: 'custom_mono';
-            src: url('https://fonts.gstatic.com/s/robotomono/v22/L0x5DF4xlVMF-BfR8bXMIjhGq3-cXbKDO1w.woff2') format('woff2');
-            font-weight: 400;
-            font-style: normal;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'custom_mono', 'SF Mono', 'Consolas', 'Menlo', monospace;
-            font-size: 16px;
-            line-height: 1.7;
-            margin: 0;
-            display: flex;
-            padding: 3rem;
-        }
-
-        a {
-            color: var(--text);
-            text-decoration: underline;
-            text-decoration-thickness: 1px;
-            transition: color 0.2s ease-in-out;
-        }
-
-        a:hover {
-            color: var(--text-main);
-        }
-        
-        .sidebar {
-            width: 150px;
-            flex-shrink: 0;
-            padding-right: 2rem;
-        }
-
-        .sidebar-nav a {
-            display: block;
-            text-decoration: none;
-            margin-bottom: 0.5rem;
-        }
-        
-        .sidebar-nav a:before {
-            content: '>';
-            margin-right: 0.75rem;
-            color: var(--text-light);
-        }
-
-        .main-content {
-            width: 100%;
-            padding-right: 260px;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 4rem;
-        }
-
-        header .logo {
-            font-weight: bold;
-        }
-        
-        .content-section {
-            margin-top: 4rem;
-        }
-
-        .content-section h2 {
-            font-weight: normal;
-            font-size: 1em;
-            margin-bottom: 2rem;
-        }
-        
-        .item-list {
-            max-width: 750px;
-        }
-
-        .list-item {
-            display: flex;
-            margin-bottom: 1.5rem;
-            align-items: flex-start;
-        }
-        
-        .list-item .name {
-            width: 150px;
-            flex-shrink: 0;
-            color: var(--text-main);
-        }
-        
-        .list-item .desc {
-            color: var(--text-light);
-        }
-        
-        .project-link {
-            display: inline-block;
-            margin-top: 8px;
-            color: var(--text-main);
-            font-weight: bold;
-        }
-
-        .side-widget {
-            position: fixed;
-            top: 3rem;
-            right: 3rem;
-            width: 200px;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .side-widget .tenor-gif-embed {
-            border: 1px solid var(--highlight-border);
-        }
-
-        @media (max-width: 1024px) {
-            .side-widget {
-                position: relative;
-                top: auto;
-                right: auto;
-                width: 100%;
-                margin-top: 4rem;
-                flex-direction: row;
-                justify-content: center;
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>loveucifer | Projects</title>
+        <style>
+            :root {
+                --bg: #000000;
+                --text: #ccc;
+                --text-main: #e0e0e0;
+                --text-light: #888;
+                --highlight-bg: #2a2a2a;
+                --highlight-border: #3a3a3a;
             }
-            .side-widget .tenor-gif-embed {
-                max-width: 45%;
-            }
-            .main-content {
-                padding-right: 0;
-            }
-        }
 
-        @media (max-width: 768px) {
+            @font-face {
+                font-family: "custom_mono";
+                src: url("https://fonts.gstatic.com/s/robotomono/v22/L0x5DF4xlVMF-BfR8bXMIjhGq3-cXbKDO1w.woff2")
+                    format("woff2");
+                font-weight: 400;
+                font-style: normal;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
             body {
-                flex-direction: column;
-                padding: 1.5rem;
-            }
-            .sidebar {
-                width: 100%;
+                background-color: var(--bg);
+                color: var(--text);
+                font-family:
+                    "custom_mono", "SF Mono", "Consolas", "Menlo", monospace;
+                font-size: 16px;
+                line-height: 1.7;
+                margin: 0;
                 display: flex;
-                flex-wrap: wrap;
-                margin-bottom: 2rem;
+                padding: 3rem;
             }
+
+            a {
+                color: var(--text);
+                text-decoration: underline;
+                text-decoration-thickness: 1px;
+                transition: color 0.2s ease-in-out;
+            }
+
+            a:hover {
+                color: var(--text-main);
+            }
+
+            .sidebar {
+                width: 150px;
+                flex-shrink: 0;
+                padding-right: 2rem;
+            }
+
             .sidebar-nav a {
-                margin-right: 1.5rem;
+                display: block;
+                text-decoration: none;
                 margin-bottom: 0.5rem;
             }
-        }
-    </style>
-</head>
-<body>
 
-    <aside class="sidebar">
-        <nav class="sidebar-nav">
-            <a href="philosophy.html">philosophy</a>
-            <a href="books.html">books</a>
-            <a href="projects.html">projects</a>
-            <a href="YOUR_RESUME_LINK.pdf" target="_blank">resume</a>
-        </nav>
-    </aside>
+            .sidebar-nav a:before {
+                content: ">";
+                margin-right: 0.75rem;
+                color: var(--text-light);
+            }
 
-    <main class="main-content">
-        <header>
-            <a href="index.html" class="logo" style="text-decoration: none;">loveucifer</a>
-        </header>
+            .main-content {
+                width: 100%;
+                padding-right: 260px;
+            }
 
-        <section id="projects" class="content-section">
-            <h2>my projects &rarr;</h2>
-            <div class="item-list">
-                <div class="list-item">
-                    <div class="name">AI Presentation Maker</div>
-                    <div class="desc">
-                         This project is a web-based application built with Streamlit that uses Sarvam AI's language models to automatically generate complete, multilingual PowerPoint presentations from a single topic.
-                        <br>
-                        <a href="https://github.com/loveucifer/sarvam-ai-cookbook/tree/main/examples/AI_Presentation_Architect" target="_blank" class="project-link">View on GitHub &rarr;</a>
+            header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 4rem;
+            }
+
+            header .logo {
+                font-weight: bold;
+            }
+
+            .content-section {
+                margin-top: 4rem;
+            }
+
+            .content-section h2 {
+                font-weight: normal;
+                font-size: 1em;
+                margin-bottom: 2rem;
+            }
+
+            .item-list {
+                max-width: 750px;
+            }
+
+            .list-item {
+                display: flex;
+                margin-bottom: 1.5rem;
+                align-items: flex-start;
+            }
+
+            .list-item .name {
+                width: 150px;
+                flex-shrink: 0;
+                color: var(--text-main);
+            }
+
+            .list-item .desc {
+                color: var(--text-light);
+            }
+
+            .project-link {
+                display: inline-block;
+                margin-top: 8px;
+                color: var(--text-main);
+                font-weight: bold;
+            }
+
+            .side-widget {
+                position: fixed;
+                top: 3rem;
+                right: 3rem;
+                width: 200px;
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .side-widget .tenor-gif-embed {
+                border: 1px solid var(--highlight-border);
+            }
+
+            @media (max-width: 1024px) {
+                .side-widget {
+                    position: relative;
+                    top: auto;
+                    right: auto;
+                    width: 100%;
+                    margin-top: 4rem;
+                    flex-direction: row;
+                    justify-content: center;
+                }
+                .side-widget .tenor-gif-embed {
+                    max-width: 45%;
+                }
+                .main-content {
+                    padding-right: 0;
+                }
+            }
+
+            @media (max-width: 768px) {
+                body {
+                    flex-direction: column;
+                    padding: 1.5rem;
+                }
+                .sidebar {
+                    width: 100%;
+                    display: flex;
+                    flex-wrap: wrap;
+                    margin-bottom: 2rem;
+                }
+                .sidebar-nav a {
+                    margin-right: 1.5rem;
+                    margin-bottom: 0.5rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="philosophy.html">philosophy</a>
+                <a href="books.html">books</a>
+                <a href="projects.html">projects</a>
+                <a href="YOUR_RESUME_LINK.pdf" target="_blank">resume</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <a href="index.html" class="logo" style="text-decoration: none"
+                    >loveucifer</a
+                >
+            </header>
+
+            <section id="projects" class="content-section">
+                <h2>my projects &rarr;</h2>
+                <div class="item-list">
+                    <div class="list-item">
+                        <div class="name">BLACK</div>
+                        <div class="desc">
+                            BLACK is an open source digital ecosystem making
+                            academic life simpler, featured in magazines and
+                            over 500+ active users
+
+                            <br />
+                            <a
+                                href="https://github.com/loveucifer/BLACK"
+                                target="_blank"
+                                class="project-link"
+                                >View Source &rarr;</a
+                            >
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="name">ledge</div>
+                        <div class="desc">
+                            An open source expense tracking application with
+                            minimalist design principles supports multiple
+                            currenceis and also track them with dedicated pie
+                            charts
+                            <br />
+                            <a
+                                href="https://github.com/loveucifer/ledge"
+                                target="_blank"
+                                class="project-link"
+                                >View Source &rarr;</a
+                            >
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="name">sculptx</div>
+                        <div class="desc">
+                            SculptX is an experimental synesthetic composer
+                            built with Flutter. It's a digital instrument that
+                            transforms 3D shapes into unique soundscapes in
+                            real-time.
+                            <br />
+                            <a
+                                href="https://github.com/loveucifer/sculptx"
+                                target="_blank"
+                                class="project-link"
+                                >View Source &rarr;</a
+                            >
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="name">atelier</div>
+                        <div class="desc">
+                            A marketplace app for creators built on top of
+                            flutter and supabase
+                            <br />
+                            <a
+                                href="https://github.com/loveucifer/atelier--"
+                                target="_blank"
+                                class="project-link"
+                                >View Source &rarr;</a
+                            >
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="name">AI Presentation Maker</div>
+                        <div class="desc">
+                            This project is a web-based application built with
+                            Streamlit that uses Sarvam AI's language models to
+                            automatically generate complete, multilingual
+                            PowerPoint presentations from a single topic.
+                            <br />
+                            <a
+                                href="https://github.com/loveucifer/sarvam-ai-cookbook/tree/main/examples/AI_Presentation_Architect"
+                                target="_blank"
+                                class="project-link"
+                                >View on GitHub &rarr;</a
+                            >
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="name">Quick Start Chatbot</div>
+                        <div class="desc">
+                            A simple, single-turn chatbot that demonstrates how
+                            to use the Sarvam AI Chat Completions API.
+                            <br />
+                            <a
+                                href="https://github.com/loveucifer/sarvam-ai-cookbook/tree/main/examples/QuickStart_Chatbot"
+                                target="_blank"
+                                class="project-link"
+                                >View on GitHub &rarr;</a
+                            >
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="name">Ai canvas</div>
+                        <div class="desc">
+                            Use your finger to draw on air
+                            <br />
+                            <a
+                                href="https://github.com/loveucifer/Ai-Canvas/blob/main/index.html"
+                                target="_blank"
+                                class="project-link"
+                                >View Source &rarr;</a
+                            >
+                        </div>
                     </div>
                 </div>
-                <div class="list-item">
-                    <div class="name">Quick Start Chatbot</div>
-                    <div class="desc">
-                        A simple, single-turn chatbot that demonstrates how to use the Sarvam AI Chat Completions API.
-                        <br>
-                        <a href="https://github.com/loveucifer/sarvam-ai-cookbook/tree/main/examples/QuickStart_Chatbot" target="_blank" class="project-link">View on GitHub &rarr;</a>
-                    </div>
-                </div>
-                <div class="list-item">
-                    <div class="name">Calorie Master</div>
-                    <div class="desc">
-                       This AI tool analyzes food images and estimates their calorie content.
-                        <br>
-                        <a href="https://github.com/loveucifer/CALORIE-MASTER" target="_blank" class="project-link">View Source &rarr;</a>
-                    </div>
-                </div>
-                <div class="list-item">
-                    <div class="name">speedDATE</div>
-                    <div class="desc">
-                       Dating Algorithm written using python
-                        <br>
-                        <a href="https://github.com/loveucifer/SpeedDATE" target="_blank" class="project-link">View Source &rarr;</a>
-                    </div>
-                </div>
-                <div class="list-item">
-                    <div class="name">easoku</div>
-                    <div class="desc">
-                       Sudoku solver based on python with .py file and an html frontend
-                        <br>
-                        <a href="https://github.com/loveucifer/easoku" target="_blank" class="project-link">View Source &rarr;</a>
-                    </div>
-                </div><div class="list-item">
-                    <div class="name">Ai canvas</div>
-                    <div class="desc">
-                       Use your finger to draw on air
-                        <br>
-                        <a href="https://github.com/loveucifer/Ai-Canvas/blob/main/index.html" target="_blank" class="project-link">View Source &rarr;</a>
-                    </div>
-                </div>
+            </section>
+        </main>
+
+        <aside class="side-widget">
+            <div
+                class="tenor-gif-embed"
+                data-postid="7476516897214488946"
+                data-share-method="host"
+                data-aspect-ratio="1.77857"
+                data-width="100%"
+            >
+                <a
+                    href="https://tenor.com/view/pinkupinemame-kakegurui-anime-gif-7476516897214488946"
+                    >Pinkupinemame Kakegurui GIF</a
+                >from
+                <a href="https://tenor.com/search/pinkupinemame-gifs"
+                    >Pinkupinemame GIFs</a
+                >
             </div>
-        </section>
-        
-    </main>
-    
-    <aside class="side-widget">
-        <div class="tenor-gif-embed" data-postid="7476516897214488946" data-share-method="host" data-aspect-ratio="1.77857" data-width="100%"><a href="https://tenor.com/view/pinkupinemame-kakegurui-anime-gif-7476516897214488946">Pinkupinemame Kakegurui GIF</a>from <a href="https://tenor.com/search/pinkupinemame-gifs">Pinkupinemame GIFs</a></div>
-        <div class="tenor-gif-embed" data-postid="5850692150497406639" data-share-method="host" data-aspect-ratio="1.76596" data-width="100%"><a href="https://tenor.com/view/cyberpunk-2077-2077brizzard-br-b-gif-5850692150497406639">Cyberpunk 2077 GIF</a>from <a href="https://tenor.com/search/cyberpunk-gifs">Cyberpunk GIFs</a></div>
-    </aside>
+            <div
+                class="tenor-gif-embed"
+                data-postid="5850692150497406639"
+                data-share-method="host"
+                data-aspect-ratio="1.76596"
+                data-width="100%"
+            >
+                <a
+                    href="https://tenor.com/view/cyberpunk-2077-2077brizzard-br-b-gif-5850692150497406639"
+                    >Cyberpunk 2077 GIF</a
+                >from
+                <a href="https://tenor.com/search/cyberpunk-gifs"
+                    >Cyberpunk GIFs</a
+                >
+            </div>
+        </aside>
 
-    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
-</body>
+        <script
+            type="text/javascript"
+            async
+            src="https://tenor.com/embed.js"
+        ></script>
+    </body>
 </html>
