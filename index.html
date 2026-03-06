@@ -157,6 +157,28 @@
             border: 1px solid var(--highlight-border);
         }
 
+        .profile-grid {
+            display: flex;
+            gap: 4px;
+        }
+
+        .profile-grid a {
+            display: block;
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--highlight-border);
+            background: var(--highlight-bg);
+            flex-shrink: 0;
+        }
+
+        .profile-grid img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         @media (max-width: 1024px) {
             .side-widget {
                 position: relative;
@@ -198,9 +220,6 @@
     <aside class="sidebar">
         <nav class="sidebar-nav">
             <a href="philosophy.html">philosophy</a>
-            <a href="books.html">books</a>
-            <a href="projects.html">projects</a>
-            <a href="YOUR_RESUME_LINK.pdf" target="_blank">resume</a>
         </nav>
     </aside>
 
@@ -211,12 +230,11 @@
 
         <section class="intro">
             <p>loves working on <span class="highlight">flutter</span>, <span class="highlight">python</span>, <span class="highlight">linux</span>, and <span class="highlight">rust</span>.</p>
-            <p>building kimino <span class="highlight">as of 2025</span>.</p>
+            <p>building kimino.</p>
         </section>
         
         <section class="quick-links">
             <a href="https://github.com/loveucifer" target="_blank">github</a>
-            <a href="https://www.ultimatelyitsblack.com" target="_blank">app</a>
             <a href="https://loveucifer.bearblog.dev" target="_blank">blogs</a>
 
         </section>
@@ -228,50 +246,71 @@
                 <img src="https://github.com/loveucifer/dev/blob/main/desktop.png?raw=true" alt="Desktop screenshot">
             </div>
         </section>
-
-        <section id="toolkit" class="content-section">
-            <h2>my toolkit &rarr;</h2>
-            <div class="item-list">
-                <div class="list-item">
-                    <div class="name">Hardware</div>
-                    <div class="desc">
-                        Thinkpad X13 <span class="highlight">macOS Sequoia / Arch Linux</span>
-                        <br>
-                        M2 Pro Mac Mini <span class="highlight">AI & ML Workloads</span>
-                        <br>
-                        OnePlus 7 <span class="highlight">Kali NetHunter</span>
-                        <br>
-                        Macbook pro M4 pro 20 core gpu 
-                    </div>
-                </div>
-                 <div class="list-item">
-                    <div class="name">Languages</div>
-                    <div class="desc">
-                        <span class="highlight">C</span> <span class="highlight">C++</span> <span class="highlight">Python</span> <span class="highlight">Rust</span> <span class="highlight">Flutter</span> <span class="highlight">HTML/CSS/JS</span> <span class="highlight">SQL</span>
-                    </div>
-                </div>
-                <div class="list-item">
-                    <div class="name">Software</div>
-                    <div class="desc">
-                        <span class="highlight">Neovim</span> <span class="highlight">VS Code</span> <span class="highlight">Xcode</span> <span class="highlight">PostgreSQL</span>
-                    </div>
-                </div>
-                <div class="list-item">
-                    <div class="name">OS & Shell</div>
-                    <div class="desc">
-                        Arch Linux, macOS, <span class="highlight">Starship Prompt</span>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
     
     <aside class="side-widget">
         <div class="tenor-gif-embed" data-postid="7476516897214488946" data-share-method="host" data-aspect-ratio="1.77857" data-width="100%"><a href="https://tenor.com/view/pinkupinemame-kakegurui-anime-gif-7476516897214488946">Pinkupinemame Kakegurui GIF</a>from <a href="https://tenor.com/search/pinkupinemame-gifs">Pinkupinemame GIFs</a></div>
         <div class="tenor-gif-embed" data-postid="5850692150497406639" data-share-method="host" data-aspect-ratio="1.76596" data-width="100%"><a href="https://tenor.com/view/cyberpunk-2077-2077brizzard-br-b-gif-5850692150497406639">Cyberpunk 2077 GIF</a>from <a href="https://tenor.com/search/cyberpunk-gifs">Cyberpunk GIFs</a></div>
+            <div class="profile-section">
+                <div style="font-size: 0.85em; margin-bottom: 0.75rem; color: var(--text-light);">checkout my cool friends</div>
+                <div class="profile-grid" id="profile-grid" data-profiles="torvalds,shadcn"></div>
+            </div>
     </aside>
 
     <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+    <script>
+        async function fetchGitHubProfile(username) {
+            const response = await fetch(`https://api.github.com/users/${username}`);
+            if (!response.ok) return null;
+            return response.json();
+        }
+
+        async function loadProfiles() {
+            const grid = document.getElementById('profile-grid');
+            try {
+                const res = await fetch('friends.txt');
+                const text = await res.text();
+                const profiles = text.trim().split('\n').filter(p => p.trim());
+                for (const username of profiles) {
+                    try {
+                        const user = await fetchGitHubProfile(username.trim());
+                        if (user) {
+                            const link = document.createElement('a');
+                            link.href = user.html_url;
+                            link.target = '_blank';
+                            link.title = user.login;
+                            const img = document.createElement('img');
+                            img.src = user.avatar_url;
+                            img.alt = user.login;
+                            link.appendChild(img);
+                            grid.appendChild(link);
+                        }
+                    } catch (e) {}
+                }
+            } catch (e) {
+                // Fallback to data attribute
+                const profiles = grid.dataset.profiles.split(',').filter(p => p.trim());
+                for (const username of profiles) {
+                    try {
+                        const user = await fetchGitHubProfile(username.trim());
+                        if (user) {
+                            const link = document.createElement('a');
+                            link.href = user.html_url;
+                            link.target = '_blank';
+                            link.title = user.login;
+                            const img = document.createElement('img');
+                            img.src = user.avatar_url;
+                            img.alt = user.login;
+                            link.appendChild(img);
+                            grid.appendChild(link);
+                        }
+                    } catch (e) {}
+                }
+            }
+        }
+
+        loadProfiles();
+    </script>
 </body>
 </html>
 
