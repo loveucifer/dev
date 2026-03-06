@@ -1,0 +1,49 @@
+name: Update Friend Avatars
+
+on:
+  # Run when friends.txt is updated
+  push:
+    paths:
+      - 'friends.txt'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+  
+  # Run weekly to update avatars
+  schedule:
+    - cron: '0 0 * * 0'  # Every Sunday at midnight
+
+jobs:
+  update-avatars:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+        
+    - name: Install dependencies
+      run: |
+        pip install requests
+        
+    - name: Download avatars
+      run: |
+        python3 download_avatars.py
+        
+    - name: Commit and push if avatars changed
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        
+        if [[ -n $(git status --porcelain) ]]; then
+          git add avatars/ profiles_cache.json
+          git commit -m "🤖 Auto-update friend avatars"
+          git push
+          echo "✅ Avatars updated and pushed"
+        else
+          echo "✅ No avatar changes needed"
+        fi
