@@ -321,7 +321,8 @@
     <script>
         async function loadProfilesFromCache() {
             try {
-                const response = await fetch('profiles_cache.json');
+                const cacheBuster = `?v=${Date.now()}`;
+                const response = await fetch(`profiles_cache.json${cacheBuster}`);
                 if (response.ok) {
                     return await response.json();
                 }
@@ -360,7 +361,14 @@
             const img = document.createElement('img');
             img.src = user.avatar_url;
             img.alt = user.login;
-            img.onload = () => link.style.opacity = '1';
+            img.onload = () => {
+                console.log(`Avatar loaded: ${user.login}`);
+                link.style.opacity = '1';
+            };
+            img.onerror = () => {
+                console.warn(`Avatar failed to load: ${user.login} - ${user.avatar_url}`);
+                link.style.opacity = '0.5'; // Show even if avatar fails
+            };
             
             link.appendChild(img);
             return link;
@@ -381,7 +389,8 @@
                 // Get the order from friends.txt first
                 let profileOrder = [];
                 try {
-                    const res = await fetch('friends.txt');
+                    const cacheBuster = `?v=${Date.now()}`;
+                    const res = await fetch(`friends.txt${cacheBuster}`);
                     if (res.ok) {
                         const text = await res.text();
                         profileOrder = text.trim().split('\n').filter(p => p.trim());
