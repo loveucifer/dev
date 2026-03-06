@@ -385,23 +385,31 @@
                     if (res.ok) {
                         const text = await res.text();
                         profileOrder = text.trim().split('\n').filter(p => p.trim());
+                        console.log('Profile order from friends.txt:', profileOrder);
                     }
                 } catch (e) {
                     // Fallback to Object.keys if friends.txt fails
                     profileOrder = Object.keys(cachedProfiles);
+                    console.log('Using fallback order from cache keys:', profileOrder);
                 }
                 
                 grid.innerHTML = '';
                 
                 // Load cached profiles in the correct order
-                profileOrder.forEach(username => {
+                let loadedCount = 0;
+                profileOrder.forEach((username, index) => {
                     const user = cachedProfiles[username.trim()];
                     if (user) {
+                        console.log(`Loading profile ${index + 1}: ${username}`);
                         const profileElement = createProfileElement(user);
                         grid.appendChild(profileElement);
+                        loadedCount++;
+                    } else {
+                        console.warn(`Profile not found in cache: ${username}`);
                     }
                 });
                 
+                console.log(`Loaded ${loadedCount} profiles from cache`);
                 return;
             }
             
