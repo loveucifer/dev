@@ -158,10 +158,38 @@
         }
 
         .profile-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            max-width: 180px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+            gap: 6px;
+            max-width: 100%;
+            width: 100%;
+        }
+        
+        /* Desktop: 4 columns */
+        @media (min-width: 769px) {
+            .profile-grid {
+                grid-template-columns: repeat(4, 40px);
+                max-width: 180px;
+                justify-content: start;
+            }
+        }
+        
+        /* Mobile landscape: 3 columns */
+        @media (max-width: 768px) and (min-width: 481px) {
+            .profile-grid {
+                grid-template-columns: repeat(3, 40px);
+                max-width: 132px;
+                justify-content: center;
+            }
+        }
+        
+        /* Mobile portrait: 2 columns */
+        @media (max-width: 480px) {
+            .profile-grid {
+                grid-template-columns: repeat(2, 40px);
+                max-width: 88px;
+                justify-content: center;
+            }
         }
 
         .profile-grid a {
@@ -213,6 +241,36 @@
             .sidebar-nav a {
                 margin-right: 1.5rem;
                 margin-bottom: 0.5rem;
+            }
+        }
+        
+        /* Mobile-specific profile section improvements */
+        @media (max-width: 768px) {
+            .profile-section {
+                text-align: center;
+                margin-top: 1rem;
+            }
+            
+            .side-widget {
+                align-items: center;
+            }
+            
+            .side-widget .profile-section {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .profile-section {
+                margin-top: 0.5rem;
+            }
+            
+            .profile-section > div:first-child {
+                margin-bottom: 0.5rem !important;
+                font-size: 0.8em !important;
             }
         }
     </style>
@@ -319,12 +377,29 @@
             
             if (cachedProfiles) {
                 console.log('Loading profiles from cache');
+                
+                // Get the order from friends.txt first
+                let profileOrder = [];
+                try {
+                    const res = await fetch('friends.txt');
+                    if (res.ok) {
+                        const text = await res.text();
+                        profileOrder = text.trim().split('\n').filter(p => p.trim());
+                    }
+                } catch (e) {
+                    // Fallback to Object.keys if friends.txt fails
+                    profileOrder = Object.keys(cachedProfiles);
+                }
+                
                 grid.innerHTML = '';
                 
-                // Load cached profiles instantly
-                Object.values(cachedProfiles).forEach(user => {
-                    const profileElement = createProfileElement(user);
-                    grid.appendChild(profileElement);
+                // Load cached profiles in the correct order
+                profileOrder.forEach(username => {
+                    const user = cachedProfiles[username.trim()];
+                    if (user) {
+                        const profileElement = createProfileElement(user);
+                        grid.appendChild(profileElement);
+                    }
                 });
                 
                 return;
