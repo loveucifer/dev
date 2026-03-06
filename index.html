@@ -262,53 +262,95 @@
     <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
     <script>
         async function fetchGitHubProfile(username) {
-            const response = await fetch(`https://api.github.com/users/${username}`);
-            if (!response.ok) return null;
-            return response.json();
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+                
+                const response = await fetch(`https://api.github.com/users/${username}`, {
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+                
+                if (!response.ok) return null;
+                return await response.json();
+            } catch (error) {
+                console.warn(`Failed to fetch profile for ${username}:`, error.message);
+                return null;
+            }
+        }
+
+        function createProfileElement(user) {
+            const link = document.createElement('a');
+            link.href = user.html_url;
+            link.target = '_blank';
+            link.title = user.login;
+            link.style.opacity = '0';
+            link.style.transition = 'opacity 0.3s ease';
+            
+            const img = document.createElement('img');
+            img.src = user.avatar_url;
+            img.alt = user.login;
+            img.onload = () => link.style.opacity = '1';
+            
+            link.appendChild(img);
+            return link;
         }
 
         async function loadProfiles() {
             const grid = document.getElementById('profile-grid');
+            
+            // Show loading indicator
+            grid.innerHTML = '<div style="color: var(--text-light); font-size: 0.8em;">loading friends...</div>';
+            
+            let profiles = [];
+            
             try {
                 const res = await fetch('friends.txt');
-                const text = await res.text();
-                const profiles = text.trim().split('\n').filter(p => p.trim());
-                for (const username of profiles) {
-                    try {
-                        const user = await fetchGitHubProfile(username.trim());
-                        if (user) {
-                            const link = document.createElement('a');
-                            link.href = user.html_url;
-                            link.target = '_blank';
-                            link.title = user.login;
-                            const img = document.createElement('img');
-                            img.src = user.avatar_url;
-                            img.alt = user.login;
-                            link.appendChild(img);
-                            grid.appendChild(link);
-                        }
-                    } catch (e) {}
+                if (res.ok) {
+                    const text = await res.text();
+                    profiles = text.trim().split('\n').filter(p => p.trim());
                 }
             } catch (e) {
-                // Fallback to data attribute
-                const profiles = grid.dataset.profiles.split(',').filter(p => p.trim());
-                for (const username of profiles) {
-                    try {
-                        const user = await fetchGitHubProfile(username.trim());
-                        if (user) {
-                            const link = document.createElement('a');
-                            link.href = user.html_url;
-                            link.target = '_blank';
-                            link.title = user.login;
-                            const img = document.createElement('img');
-                            img.src = user.avatar_url;
-                            img.alt = user.login;
-                            link.appendChild(img);
-                            grid.appendChild(link);
-                        }
-                    } catch (e) {}
-                }
+                console.warn('Failed to fetch friends.txt, using fallback');
             }
+            
+            // Fallback to data attribute if friends.txt failed
+            if (profiles.length === 0) {
+                profiles = grid.dataset.profiles.split(',').filter(p => p.trim());
+            }
+            
+            if (profiles.length === 0) {
+                grid.innerHTML = '<div style="color: var(--text-light); font-size: 0.8em;">no friends found</div>';
+                return;
+            }
+            
+            // Clear loading message
+            grid.innerHTML = '';
+            
+            // Load all profiles in parallel for speed
+            const profilePromises = profiles.map(username => 
+                fetchGitHubProfile(username.trim())
+            );
+            
+            // Process results as they come in
+            profilePromises.forEach(async (promise, index) => {
+                try {
+                    const user = await promise;
+                    if (user) {
+                        const profileElement = createProfileElement(user);
+                        grid.appendChild(profileElement);
+                    }
+                } catch (e) {
+                    console.warn(`Failed to process profile ${profiles[index]}`);
+                }
+            });
+            
+            // Set a fallback timeout
+            setTimeout(() => {
+                if (grid.children.length === 0) {
+                    grid.innerHTML = '<div style="color: var(--text-light); font-size: 0.8em;">friends temporarily unavailable</div>';
+                }
+            }, 10000);
         }
 
         loadProfiles();
